@@ -1,10 +1,15 @@
+import Home from "./pages/Home";
+import Analysis from "./pages/Analysis";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+
+export default function App() {
   return (
-    <>
-      <div>Hello </div>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/analysis" element={<Analysis />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
