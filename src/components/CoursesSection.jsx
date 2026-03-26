@@ -1,138 +1,168 @@
-import { Star, Users, Clock } from 'lucide-react';
-import { courses } from '../data/mockData';
+import { Star, Users, Clock } from "lucide-react";
+import { courses } from "../data/mockData";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function CoursesSection() {
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
+
+  // Filter logic
+  const filteredCourses = courses.filter((course) => {
+    return (
+      course.title.toLowerCase().includes(search.toLowerCase()) &&
+      (category === "All" || course.category === category)
+    );
+  });
+
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto" id="courses">
-      <div className="text-center mb-12">
-        <h2
-          className="text-4xl font-bold mb-4"
-          data-testid="courses-section-title"
-        >
-          Popular Courses
-        </h2>
-        <p className="text-gray-600 text-lg">
-          Choose from our most-loved courses designed by industry experts
-        </p>
-      </div>
+    <section className="py-20 px-4 sm:px-6 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-            data-testid={`course-card-${course.id}`}
+        {/* Header */}
+        <div className="mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
+            All Courses
+          </h2>
+          <p className="text-gray-600">
+            Browse our complete catalog of courses and find your next learning journey
+          </p>
+        </div>
+
+        {/* Search + Filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-10">
+          
+          {/* Search */}
+          <input
+            type="text"
+            placeholder="Search courses or instructors..."
+            className="flex-1 border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          {/* Category */}
+          <select
+            className="border border-gray-300 px-4 py-3 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
           >
-            <div className="relative h-48">
-              <img
-                src={course.image}
-                alt={course.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-semibold text-blue-600">
-                {course.level}
-              </div>
-            </div>
+            <option value="All">All Categories</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Programming">Programming</option>
+            <option value="Design">Design</option>
+            <option value="Cloud Computing">Cloud Computing</option>
+          </select>
+        </div>
 
-            <div className="p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm text-gray-500">
-                  {course.category}
-                </span>
-              </div>
+        {/* Course Count */}
+        <p className="text-gray-600 mb-6">
+          Showing {filteredCourses.length} courses
+        </p>
 
-              <h3
-                className="text-xl font-bold mb-2"
-                data-testid={`course-title-${course.id}`}
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          {filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
+              <div
+                key={course.id}
+                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden border"
               >
-                {course.title}
-              </h3>
-
-              <p className="text-gray-600 text-sm mb-4">
-                {course.description}
-              </p>
-
-              <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <Star
-                    className="text-yellow-500 fill-yellow-500"
-                    size={16}
+                {/* Image */}
+                <div className="relative h-48">
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="w-full h-full object-cover"
                   />
-                  <span className="font-medium">
-                    {course.rating}
+                  <span className="absolute top-3 right-3 bg-white text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow">
+                    {course.level}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <Users size={16} />
-                  <span>
-                    {course.students.toLocaleString()}
-                  </span>
-                </div>
+                {/* Content */}
+                <div className="p-5">
+                  <p className="text-sm text-gray-500 mb-1">
+                    {course.category}
+                  </p>
 
-                <div className="flex items-center gap-1">
-                  <Clock size={16} />
-                  <span>{course.duration}</span>
-                </div>
-              </div>
+                  <h3 className="text-lg font-bold mb-2 text-gray-900">
+                    {course.title}
+                  </h3>
 
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <span
-                    className="text-2xl font-bold text-blue-600"
-                    data-testid={`course-price-${course.id}`}
+                  <p className="text-sm text-gray-600 mb-4">
+                    {course.description}
+                  </p>
+
+                  {/* Stats */}
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                    <span className="flex items-center gap-1">
+                      <Star className="text-yellow-500 fill-yellow-500" size={14} />
+                      {course.rating}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users size={14} />
+                      {course.students.toLocaleString()}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock size={14} />
+                      {course.duration}
+                    </span>
+                  </div>
+
+                  {/* Price */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className="text-xl font-bold text-blue-600">
+                        ₹{course.price}
+                      </span>
+                      <span className="text-gray-400 line-through ml-2 text-sm">
+                        ₹{course.originalPrice}
+                      </span>
+                    </div>
+
+                    <span className="text-green-600 text-sm font-semibold">
+                      {Math.round(
+                        ((course.originalPrice - course.price) /
+                          course.originalPrice) *
+                          100
+                      )}
+                      % OFF
+                    </span>
+                  </div>
+
+                  {/* Instructor */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${course.instructor}`}
+                      alt={course.instructor}
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-sm text-gray-700">
+                      {course.instructor}
+                    </span>
+                  </div>
+
+                  {/* Button */}
+                  <button
+                    onClick={() => navigate(`/courses/${course.id}`)}
+                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
                   >
-                    ₹{course.price}
-                  </span>
-                  <span className="text-gray-400 line-through ml-2">
-                    ₹{course.originalPrice}
-                  </span>
-                </div>
-
-                <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
-                  {Math.round(
-                    ((course.originalPrice - course.price) /
-                      course.originalPrice) *
-                      100
-                  )}
-                  % OFF
+                    View Details
+                  </button>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3 mb-4 pb-4 border-b">
-                <img
-                  src={`https://ui-avatars.com/api/?name=${course.instructor}&background=random`}
-                  alt={course.instructor}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div>
-                  <p className="text-sm font-medium">
-                    {course.instructor}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Instructor
-                  </p>
-                </div>
-              </div>
-
-              <button
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-                data-testid={`enroll-button-${course.id}`}
-              >
-                Enroll Now
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="text-center mt-12">
-        <button
-          className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-          data-testid="view-all-courses-button"
-        >
-          View All 200+ Courses →
-        </button>
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-500 text-lg">
+              No courses found 😔
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );

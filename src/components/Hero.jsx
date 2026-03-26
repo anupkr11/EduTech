@@ -1,7 +1,10 @@
 import { Sparkles, ArrowRight, Play } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
+    
     <section className="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-10">
@@ -42,7 +45,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <button
+            <button onClick={()=>navigate(`/courses`)}
               className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition flex items-center gap-2 shadow-xl"
               data-testid="hero-cta-explore"
             >
