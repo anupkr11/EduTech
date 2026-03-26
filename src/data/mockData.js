@@ -134,6 +134,24 @@ export const testimonials = [
     text:
       "Best investment in my career. Got placed at Amazon within 3 months!",
   },
+  {
+    id: 3,
+    name: "Rahul Verma",
+    role: "Software Engineer at Google",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    rating: 5,
+    text:
+      "EduLearn transformed my career! The DSA course helped me crack my dream job at Google.",
+  },
+  {
+    id: 4,
+    name: "Anita Desai",
+    role: "Full Stack Developer at Amazon",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    rating: 5,
+    text:
+      "Best investment in my career. Got placed at Amazon within 3 months!",
+  },
 ];
 
 export const outcomes = [

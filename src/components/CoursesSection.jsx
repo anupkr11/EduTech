@@ -3,19 +3,20 @@ import { courses } from "../data/mockData";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export default function CoursesSection() {
+export default function CoursesSection( {selectedCategory = "All" }) {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
   // Filter logic
-  const filteredCourses = courses.filter((course) => {
-    return (
-      course.title.toLowerCase().includes(search.toLowerCase()) &&
-      (category === "All" || course.category === category)
-    );
-  });
+ const filteredCourses = courses.filter((course) => {
+  return (
+    course.title.toLowerCase().includes(search.toLowerCase()) &&
+    (category === "All" || course.category === category) &&
+    (selectedCategory === "All" || course.category === selectedCategory)
+  );
+});
 
   return (
     <section className="py-20 px-4 sm:px-6 bg-gray-50 min-h-screen">

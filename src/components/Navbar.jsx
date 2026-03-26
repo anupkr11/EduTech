@@ -48,12 +48,12 @@ export default function Navbar() {
               <>
                 <Link
                   to="/dashboard"
-                  className="text-white hover:text-blue-400 transition"
+                  className="text-blue-400 hover:text-blue-500 transition text-xl"
                 >
                   Dashboard
                 </Link>
 
-                <span className="text-gray-300 text-sm">
+                <span className="text-gray-500 text-md">
                   Hi, {user?.name}
                 </span>
 

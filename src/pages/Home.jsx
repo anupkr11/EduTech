@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import StatsSection from "../components/StatsSection";
@@ -11,16 +12,38 @@ import NewsletterSection from "../components/NewsletterSection";
 import Footer from "../components/Footer";
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const coursesRef = useRef(null); // 🔥 reference
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+
+    // 🔥 scroll to courses
+    setTimeout(() => {
+      coursesRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+    <div className="min-h-screen">
       <Navbar />
 
-      {/* FIX: Add padding top */}
       <div className="pt-20">
         <Hero />
         <StatsSection />
-        <CategoriesSection />
-        <CoursesSection />
+
+        {/* 🔥 Pass handler */}
+        <CategoriesSection
+          onCategoryClick={handleCategoryClick}
+          selectedCategory={selectedCategory}
+        />
+
+        {/* 🔥 Attach ref */}
+        <div ref={coursesRef}>
+          <CoursesSection selectedCategory={selectedCategory} />
+        </div>
+
         <OutcomesSection />
         <TestimonialsSection />
         <InstructorsSection />
