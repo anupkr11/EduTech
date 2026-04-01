@@ -13,7 +13,7 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-r from-blue-600 to-indigo-700">
+    <section className="py-20 px-6 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white overflow-hidden">
       <div className="max-w-4xl mx-auto text-center">
         <Mail className="mx-auto text-white mb-6" size={48} />
 

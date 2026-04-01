@@ -71,14 +71,14 @@ export default function CoursesSection( {selectedCategory = "All" }) {
             filteredCourses.map((course) => (
               <div
                 key={course.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden border"
+                className="group bg-white/80 backdrop-blur-lg rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border hover:-translate-y-2"
               >
                 {/* Image */}
                 <div className="relative h-48">
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                   />
                   <span className="absolute top-3 right-3 bg-white text-blue-600 text-xs font-semibold px-3 py-1 rounded-full shadow">
                     {course.level}
@@ -151,7 +151,7 @@ export default function CoursesSection( {selectedCategory = "All" }) {
                   {/* Button */}
                   <button
                     onClick={() => navigate(`/courses/${course.id}`)}
-                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:scale-105 transition"
                   >
                     View Details
                   </button>

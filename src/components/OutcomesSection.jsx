@@ -16,7 +16,7 @@ const iconMap = {
 
 export default function OutcomesSection() {
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 text-white">
+    <section className="py-20 px-6 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">

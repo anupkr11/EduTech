@@ -141,6 +141,72 @@ export default function Dashboard() {
         </div>
 
         {/* Courses */}
+        <div className="mb-10">
+  <h2 className="text-2xl font-bold mb-6">
+    Continue Learning
+  </h2>
+
+  <div className="grid md:grid-cols-2 gap-6">
+    {enrolledCourses.map((course) => {
+      const completedLessons = JSON.parse(localStorage.getItem(`progress_${course.id}`)) || [];
+const progress = Math.round(
+  (completedLessons.length / course.lessons.length) * 100
+);
+
+      return (
+        <div
+          key={course.id}
+          className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
+        >
+          {/* VIDEO */}
+          <div className="h-52">
+            <iframe
+              src={course.lessons[0].video}
+              title={course.title}
+              className="w-full h-full"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          {/* CONTENT */}
+          <div className="p-5">
+            <h3 className="text-lg font-bold mb-2">
+              {course.title}
+            </h3>
+
+            {/* PROGRESS */}
+            <div className="mb-3">
+              <div className="flex justify-between text-sm mb-1">
+                <span>Progress</span>
+                <span>{progress}%</span>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* STATUS */}
+            <p className="text-sm mb-3">
+              {progress === 100 ? "✅ Completed" : "🚀 In Progress"}
+            </p>
+
+            {/* BUTTON */}
+            <button
+              onClick={() => navigate(`/learn/${course.id}`)}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 rounded-lg hover:scale-105 transition"
+            >
+              Continue Learning
+            </button>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
         {/* (rest remains same, already clean) */}
       </div>
 

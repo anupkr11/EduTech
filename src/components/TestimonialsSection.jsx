@@ -21,7 +21,7 @@ export default function TestimonialsSection() {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-white/70 backdrop-blur-lg p-6 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
               data-testid={`testimonial-card-${testimonial.id}`}
             >
               <Quote className="text-blue-600 mb-4" size={32} />

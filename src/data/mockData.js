@@ -20,8 +20,7 @@ export const courses = [
   {
     id: 1,
     title: "Complete React Development",
-    description:
-      "Master React from basics to advanced concepts with hands-on projects",
+    description: "Master React from basics to advanced concepts",
     price: 2499,
     originalPrice: 4999,
     instructor: "Sarah Johnson",
@@ -29,15 +28,32 @@ export const courses = [
     students: 12450,
     duration: "40 hours",
     level: "Intermediate",
-    image:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400",
+    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400",
     category: "Web Development",
+
+    lessons: [
+      {
+        title: "Introduction to React",
+        video: "https://www.youtube.com/embed/bMknfKXIFA8",
+        duration: "10 min"
+      },
+      {
+        title: "Components & Props",
+        video: "https://www.youtube.com/embed/Ke90Tje7VS0",
+        duration: "15 min"
+      },
+      {
+        title: "State & Hooks",
+        video: "https://www.youtube.com/embed/O6P86uwfdR0",
+        duration: "20 min"
+      }
+    ]
   },
+
   {
     id: 2,
     title: "Java DSA Masterclass",
-    description:
-      "Crack coding interviews with comprehensive Data Structures & Algorithms",
+    description: "Crack coding interviews with DSA",
     price: 2999,
     originalPrice: 5999,
     instructor: "Michael Chen",
@@ -45,15 +61,32 @@ export const courses = [
     students: 18200,
     duration: "60 hours",
     level: "Advanced",
-    image:
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400",
+    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400",
     category: "Programming",
+
+    lessons: [
+      {
+        title: "Arrays Basics",
+        video: "https://www.youtube.com/embed/8hly31xKli0",
+        duration: "12 min"
+      },
+      {
+        title: "Linked List",
+        video: "https://www.youtube.com/embed/58YbpRDc4yw",
+        duration: "18 min"
+      },
+      {
+        title: "Binary Trees",
+        video: "https://www.youtube.com/embed/1-l_UOFi1Xw",
+        duration: "20 min"
+      }
+    ]
   },
+
   {
     id: 3,
     title: "Full Stack Web Development",
-    description:
-      "Frontend + Backend mastery with MERN stack and deployment",
+    description: "Frontend + Backend with MERN",
     price: 3499,
     originalPrice: 6999,
     instructor: "David Kumar",
@@ -61,15 +94,32 @@ export const courses = [
     students: 9800,
     duration: "80 hours",
     level: "Beginner to Advanced",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
     category: "Web Development",
+
+    lessons: [
+      {
+        title: "HTML & CSS",
+        video: "https://www.youtube.com/embed/pQN-pnXPaVg",
+        duration: "15 min"
+      },
+      {
+        title: "JavaScript Basics",
+        video: "https://www.youtube.com/embed/W6NZfCO5SIk",
+        duration: "20 min"
+      },
+      {
+        title: "Node.js Backend",
+        video: "https://www.youtube.com/embed/TlB_eWDSMt4",
+        duration: "25 min"
+      }
+    ]
   },
+
   {
     id: 4,
     title: "Python for Data Science",
-    description:
-      "Learn Python, NumPy, Pandas, and machine learning fundamentals",
+    description: "Python, Pandas, ML basics",
     price: 2799,
     originalPrice: 5499,
     instructor: "Emily Watson",
@@ -77,42 +127,27 @@ export const courses = [
     students: 15300,
     duration: "50 hours",
     level: "Beginner",
-    image:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
     category: "Data Science",
-  },
-  {
-    id: 5,
-    title: "UI/UX Design Fundamentals",
-    description:
-      "Create stunning user interfaces and experiences with Figma",
-    price: 1999,
-    originalPrice: 3999,
-    instructor: "Priya Sharma",
-    rating: 4.6,
-    students: 7500,
-    duration: "30 hours",
-    level: "Beginner",
-    image:
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400",
-    category: "Design",
-  },
-  {
-    id: 6,
-    title: "Cloud Computing with AWS",
-    description:
-      "Master AWS services and become a certified cloud practitioner",
-    price: 3299,
-    originalPrice: 6499,
-    instructor: "Robert Anderson",
-    rating: 4.9,
-    students: 11200,
-    duration: "45 hours",
-    level: "Intermediate",
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400",
-    category: "Cloud Computing",
-  },
+
+    lessons: [
+      {
+        title: "Python Basics",
+        video: "https://www.youtube.com/embed/rfscVS0vtbw",
+        duration: "20 min"
+      },
+      {
+        title: "NumPy & Pandas",
+        video: "https://www.youtube.com/embed/vmEHCJofslg",
+        duration: "18 min"
+      },
+      {
+        title: "Machine Learning Intro",
+        video: "https://www.youtube.com/embed/GwIo3gDZCVQ",
+        duration: "22 min"
+      }
+    ]
+  }
 ];
 
 export const testimonials = [
