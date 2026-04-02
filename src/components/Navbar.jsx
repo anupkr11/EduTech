@@ -1,19 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import LoginModal from "./LoginModal";
 import { Link, useNavigate } from "react-router-dom";
-
+import SignupModal from "./SignUpModal";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
+
 
   return (
     <>
@@ -58,13 +61,17 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <button
-                onClick={() => setIsLoginOpen(true)}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:scale-105 transition"
-              >
-                Login
-              </button>
-            )}
+  <div className="flex items-center gap-3">
+    {/* Login Button */}
+    <button
+      onClick={() => setIsLoginOpen(true)}
+      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:scale-105 transition"
+    >
+      Login
+    </button>
+
+  </div>
+)}
           </div>
 
           {/* Mobile Button */}
@@ -95,7 +102,14 @@ export default function Navbar() {
         )}
       </nav>
 
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal
+  isOpen={isLoginOpen}
+  onClose={() => setIsLoginOpen(false)}
+  openSignup={() => {
+    setIsLoginOpen(false);
+    setIsSignupOpen(true);
+  }}
+/>
     </>
   );
 }

@@ -1,12 +1,38 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { courses } from "../data/mockData";
 import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import API from "../api/api";
 
 export default function CourseDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [course, setCourse] = useState(null);
 
-  const course = courses.find((c) => c.id === Number(id));
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const res = await API.get(`/courses/${id}`);
+        setCourse(res.data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+
+    fetchCourse();
+  }, [id]);
+
+  const handleEnroll = async () => {
+  try {
+    await API.post("/progress/enroll", {
+      courseId: course._id,
+    });
+
+    alert("Enrollment successful!");
+    navigate("/dashboard");
+  } catch (err) {
+    alert("Already enrolled or error");
+  }
+};
 
   if (!course) return <div className="p-10">Course not found</div>;
 
@@ -18,7 +44,7 @@ export default function CourseDetails() {
         
         {/* Banner */}
         <img
-          src={course.image}
+          src={course.thumbnail}
           alt={course.title}
           className="w-full h-80 object-cover rounded-xl mb-6"
         />
@@ -47,9 +73,12 @@ export default function CourseDetails() {
         </div>
 
         {/* CTA */}
-        <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700">
-          Enroll Now
-        </button>
+        <button
+  onClick={() => navigate(`/payment/${course._id}`)}
+  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
+>
+  Enroll Now
+</button>
 
         <button
           onClick={() => navigate(-1)}

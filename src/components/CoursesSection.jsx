@@ -1,14 +1,23 @@
 import { Star, Users, Clock } from "lucide-react";
-import { courses } from "../data/mockData";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import API from "../api/api";
 
 export default function CoursesSection( {selectedCategory = "All" }) {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [courses, setCourses] = useState([]);
 
+  useEffect(() => {
+  const fetchCourses = async () => {
+    const res = await API.get("/courses");
+    setCourses(res.data);
+  };
+
+  fetchCourses();
+}, []);
   // Filter logic
  const filteredCourses = courses.filter((course) => {
   return (
@@ -70,7 +79,7 @@ export default function CoursesSection( {selectedCategory = "All" }) {
           {filteredCourses.length > 0 ? (
             filteredCourses.map((course) => (
               <div
-                key={course.id}
+                key={course._id}
                 className="group bg-white/80 backdrop-blur-lg rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden border hover:-translate-y-2"
               >
                 {/* Image */}
@@ -101,28 +110,30 @@ export default function CoursesSection( {selectedCategory = "All" }) {
 
                   {/* Stats */}
                   <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                    <span className="flex items-center gap-1">
-                      <Star className="text-yellow-500 fill-yellow-500" size={14} />
-                      {course.rating}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users size={14} />
-                      {course.students.toLocaleString()}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} />
-                      {course.duration}
-                    </span>
-                  </div>
+  <span className="flex items-center gap-1">
+    <Star className="text-yellow-500 fill-yellow-500" size={14} />
+    {course.rating || "4.5"}
+  </span>
+
+  <span className="flex items-center gap-1">
+    <Users size={14} />
+    {course.students ? course.students.toLocaleString() : "0"}
+  </span>
+
+  <span className="flex items-center gap-1">
+    <Clock size={14} />
+    {course.duration}
+  </span>
+</div>
 
                   {/* Price */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <span className="text-xl font-bold text-blue-600">
-                        ₹{course.price}
+                        ₹{course.price || 0}
                       </span>
                       <span className="text-gray-400 line-through ml-2 text-sm">
-                        ₹{course.originalPrice}
+                        ₹{course.originalPrice || 0}
                       </span>
                     </div>
 
@@ -150,7 +161,7 @@ export default function CoursesSection( {selectedCategory = "All" }) {
 
                   {/* Button */}
                   <button
-                    onClick={() => navigate(`/courses/${course.id}`)}
+                    onClick={() => navigate(`/courses/${course._id}`)}
                     className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:scale-105 transition"
                   >
                     View Details

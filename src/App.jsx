@@ -5,7 +5,8 @@ import Dashboard from './pages/Dashboard';
 import CoursesPage from './components/CoursePage';
 import CourseDetails from './components/CourseDetails';
 import ChatWidget from './components/ChatWidget';
-import LearnCourse from './pages/LaernCourse';
+import LearnCourse from './pages/LearnCourse';
+import PaymentPage from "./pages/PaymentPage";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/courses/:id" element={<CourseDetails />} />
           <Route path="/learn/:id" element={<LearnCourse />} />
+          <Route path="/payment/:id" element={<PaymentPage />} />
         </Routes>
 
       </BrowserRouter>

@@ -1,60 +1,80 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { mockUsers } from '../data/mockData';
+import { createContext, useContext, useState, useEffect } from "react";
+import API from "../api/api";
 
 const AuthContext = createContext();
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // ✅ Load user from localStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem('edulearn_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const data = JSON.parse(localStorage.getItem("edulearn_user"));
+    if (data) {
+      setUser(data.user);
     }
     setIsLoading(false);
   }, []);
 
-  const login = (email, password) => {
-    const foundUser = mockUsers.find(
-      (u) => u.email === email && u.password === password
-    );
+  // ✅ LOGIN
+  const login = async (email, password) => {
+    try {
+      const res = await API.post("/auth/login", { email, password });
 
-    if (foundUser) {
-      const userData = { ...foundUser };
-      delete userData.password;
-      setUser(userData);
-      localStorage.setItem('edulearn_user', JSON.stringify(userData));
+      const data = res.data;
+
+      localStorage.setItem("edulearn_user", JSON.stringify(data));
+      setUser(data.user);
+
       return { success: true };
+    } catch (err) {
+      return { success: false, error: "Invalid credentials" };
     }
-
-    return { success: false, error: 'Invalid email or password' };
   };
 
+  // ✅ LOGOUT
   const logout = () => {
+    localStorage.removeItem("edulearn_user");
     setUser(null);
-    localStorage.removeItem('edulearn_user');
   };
+
+  const register = async (name, email, password) => {
+  try {
+    const res = await API.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
+
+    const data = res.data;
+
+    localStorage.setItem("edulearn_user", JSON.stringify(data));
+    setUser(data.user);
+
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.msg || "Signup failed",
+    };
+  }
+};
 
   return (
     <AuthContext.Provider
       value={{
         user,
         login,
+        register,
         logout,
         isAuthenticated: !!user,
-        isLoading
+        isLoading,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+// ✅ CUSTOM HOOK (THIS WAS MISSING 🚨)
+export const useAuth = () => useContext(AuthContext);

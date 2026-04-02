@@ -3,45 +3,39 @@ import { MessageCircle, X, Send } from "lucide-react";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState(() => {
-    return JSON.parse(localStorage.getItem("chat")) || [];
-  });
+  const [messages, setMessages] = useState([
+  { role: "bot", text: "Hi 👋 I'm EduLearn AI. Ask me anything!" }
+]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const bottomRef = useRef();
 
   useEffect(() => {
-    localStorage.setItem("chat", JSON.stringify(messages));
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [messages]);
 
   // 🔥 GROQ API CALL (you will add key later)
   const fetchAIResponse = async (prompt) => {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer YOUR_GROQ_API_KEY`, // 👈 replace later
-        },
-        body: JSON.stringify({
-          model: "llama3-70b-8192",
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+    const res = await fetch("http://localhost:5000/api/ai/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: prompt }),
+    });
 
-      const data = await res.json();
-      return data.choices?.[0]?.message?.content || "No response";
-    } catch (err) {
-      return "⚠️ Something went wrong. Try again.";
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    const data = await res.json();
+    return data.reply;
+  } catch (err) {
+    return "⚠️ Something went wrong. Try again.";
+  } finally {
+    setLoading(false);
+  }
+};
   const handleSend = async () => {
     if (!input.trim()) return;
 
