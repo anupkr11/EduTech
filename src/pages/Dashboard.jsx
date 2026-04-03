@@ -54,8 +54,11 @@ export default function Dashboard() {
   const enrolledCourses = progressData;
 
   const completedCount = progressData.filter(
-    (p) => p.completedLessons.length === p.courseId.lessons.length
-  ).length;
+  (p) =>
+    p.courseId &&
+    p.courseId.lessons &&
+    p.completedLessons?.length === p.courseId.lessons.length
+).length;
 
   const stats = [
     {
@@ -117,12 +120,16 @@ export default function Dashboard() {
         <h2 className="text-xl font-bold mb-4">Continue Learning</h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {progressData.map((p) => {
+          {progressData
+  .filter((p) => p.courseId && p.courseId.lessons)
+  .map((p) => {
             const course = p.courseId;
 
-            const progress = Math.round(
-              (p.completedLessons.length / course.lessons.length) * 100
-            );
+            const progress = course?.lessons?.length
+  ? Math.round(
+      (p.completedLessons.length / course.lessons.length) * 100
+    )
+  : 0;
 
             return (
               <div key={course._id} className="bg-white rounded-xl shadow overflow-hidden">
