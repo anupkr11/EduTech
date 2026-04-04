@@ -92,6 +92,16 @@ export const faqs = [
     answer:
       "Yes! You'll receive an industry-recognized certificate.",
   },
+  {
+    question: "What if I am not satisfied with the course?",
+    answer:
+      "We offer a 7-day money-back guarantee. No questions asked!",
+  },
+  {
+    question: "Are there any prerequisites?",
+    answer:
+      "Most courses are beginner-friendly, but some may require basic programming knowledge.",
+  },
 ];
 
 export const instructors = [

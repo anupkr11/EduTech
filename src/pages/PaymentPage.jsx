@@ -2,11 +2,16 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import API from "../api/api";
 import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 const stripePromise = loadStripe("pk_test_51TI0sm9yNPKExd6gg261yx1VjYtAJTm7mCWmA1zRcIKLBCk6XXk5x7TRscBW3oS0MgW76UtPJgHErnvBwnRfnJ8k007QgwHaun"); // 🔥 replace with your key
 
 export default function PaymentPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const handlePayment = async () => {
     try {
@@ -29,6 +34,29 @@ export default function PaymentPage() {
       alert("Payment failed. Try again.");
     }
   };
+
+  useEffect(() => {
+    const checkEnrollment = async () => {
+      const res = await API.get("/progress/my");
+      const alreadyEnrolled = res.data.some(
+        (p) => p.courseId._id === id
+      );
+      if (alreadyEnrolled) {
+        alert("You are already enrolled in this course!");
+        navigate("/dashboard");
+      }
+    };
+
+    checkEnrollment();
+  }, [id]);
+
+  useEffect(() => {
+  if (!isAuthenticated) {
+    alert("Please login first");
+    navigate("/");
+  }
+}, [isAuthenticated]);
+
 
   return (
     <div className="min-h-screen bg-gray-100">

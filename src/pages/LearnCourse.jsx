@@ -46,6 +46,22 @@ export default function LearnCourse() {
     fetchProgress();
   }, [id]);
 
+  useEffect(() => {
+  const checkAccess = async () => {
+    const res = await API.get("/progress/my");
+
+    const hasAccess = res.data.some(
+      (p) => p.courseId._id === id
+    );
+
+    if (!hasAccess) {
+      navigate(`/payment/${id}`);
+    }
+  };
+
+  checkAccess();
+}, [id]);
+
   // ✅ MARK COMPLETE
   const markComplete = async () => {
     try {
