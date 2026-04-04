@@ -3,7 +3,6 @@ import { Menu, X, LogOut } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import LoginModal from "./LoginModal";
 import { Link, useNavigate } from "react-router-dom";
-import SignupModal from "./SignUpModal";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
