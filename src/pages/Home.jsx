@@ -19,7 +19,7 @@ export default function Home() {
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
 
-    // 🔥 scroll to courses
+    // scroll to courses
     setTimeout(() => {
       coursesRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -33,7 +33,7 @@ export default function Home() {
         <Hero />
         <StatsSection />
 
-        {/* 🔥 Pass handler */}
+        {/* Pass handler */}
         <CategoriesSection
           onCategoryClick={handleCategoryClick}
           selectedCategory={selectedCategory}

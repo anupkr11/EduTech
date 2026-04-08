@@ -1,13 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import API from "../api/api";
 
+//creates global container to store auth data
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ Load user from localStorage
+  // Load user from localStorage
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("edulearn_user"));
     if (data) {
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  // ✅ LOGIN
+  // LOGIN
   const login = async (email, password) => {
     try {
       const res = await API.post("/auth/login", { email, password });
@@ -32,12 +33,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ LOGOUT
+  // LOGOUT
   const logout = () => {
     localStorage.removeItem("edulearn_user");
     setUser(null);
   };
 
+  // REGISTER
   const register = async (name, email, password) => {
   try {
     const res = await API.post("/auth/register", {
@@ -76,5 +78,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// ✅ CUSTOM HOOK (THIS WAS MISSING 🚨)
+// CUSTOM HOOK
 export const useAuth = () => useContext(AuthContext);
