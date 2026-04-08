@@ -12,7 +12,7 @@ export default function CourseDetails() {
   const [course, setCourse] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
-  // 🔥 FETCH COURSE + ENROLLMENT STATUS
+  // FETCH COURSE + ENROLLMENT STATUS
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,7 +37,7 @@ export default function CourseDetails() {
   }, [id]);
 
 
-  // 🔥 LOADING STATE
+  // LOADING STATE
   if (!course) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -52,19 +52,19 @@ export default function CourseDetails() {
 
       <div className="pt-20 max-w-6xl mx-auto px-6 py-10">
         
-        {/* 🔥 COURSE BANNER */}
+        {/* COURSE BANNER */}
         <img
           src={course.thumbnail}
           alt={course.title}
           className="w-full h-80 object-cover rounded-xl mb-6"
         />
 
-        {/* 🔥 TITLE */}
+        {/* TITLE */}
         <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
 
         <p className="text-gray-600 mb-6">{course.description}</p>
 
-        {/* 🔥 INFO CARDS */}
+        {/* INFO CARDS */}
         <div className="grid md:grid-cols-3 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow">
             <p className="font-semibold">Instructor</p>
@@ -82,7 +82,7 @@ export default function CourseDetails() {
           </div>
         </div>
 
-        {/* 🔥 CTA BUTTON */}
+        {/* CTA BUTTON */}
         {!isEnrolled ? (
   <button
     onClick={() => {
@@ -112,7 +112,7 @@ export default function CourseDetails() {
           ← Back
         </button>
 
-        {/* 🔥 COURSE CONTENT */}
+        {/* COURSE CONTENT */}
         <h2 className="text-2xl font-bold mt-10 mb-4">
           Course Content
         </h2>
@@ -127,7 +127,7 @@ export default function CourseDetails() {
                 {index + 1}. {lesson.title}
               </span>
 
-              {/* 🔥 LOCK / UNLOCK LOGIC */}
+              {/* LOCK/UNLOCK LOGIC */}
               {isEnrolled || index === 0 ? (
                 <button
                   onClick={() =>

@@ -14,7 +14,7 @@ import Footer from "../components/Footer";
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const coursesRef = useRef(null); // 🔥 reference
+  const coursesRef = useRef(null); 
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -39,7 +39,7 @@ export default function Home() {
           selectedCategory={selectedCategory}
         />
 
-        {/* 🔥 Attach ref */}
+        {/* Attach ref */}
         <div ref={coursesRef}>
           <CoursesSection selectedCategory={selectedCategory} />
         </div>

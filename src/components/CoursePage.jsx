@@ -6,8 +6,6 @@ export default function CoursesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-
-      {/* IMPORTANT: prevent navbar overlap */}
       <div className="pt-20">
         <CoursesSection />
       </div>

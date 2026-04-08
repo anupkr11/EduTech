@@ -17,7 +17,7 @@ export default function CategoriesSection({
           </p>
         </div>
 
-        {/* 🔥 Show All */}
+        {/* Show All */}
         <div className="text-center mb-6">
           <button
             onClick={() => onCategoryClick("All")}
@@ -38,7 +38,7 @@ export default function CategoriesSection({
             return (
               <div
                 key={index}
-                onClick={() => onCategoryClick(category.name)} // 🔥 CLICK
+                onClick={() => onCategoryClick(category.name)} 
                 className={`p-6 rounded-2xl backdrop-blur-lg border transition-all duration-300 text-center cursor-pointer hover:-translate-y-2 hover:shadow-2xl ${
                   selectedCategory === category.name
                     ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
