@@ -1,10 +1,9 @@
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Sparkles, ArrowRight, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const navigate = useNavigate();
   return (
-    
     <section className="relative bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 text-white overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-10">
@@ -45,16 +44,23 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <button onClick={()=>navigate(`/courses`)}
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition flex items-center gap-2 shadow-xl"
+            <button
+              onClick={() => navigate(`/courses`)}
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition flex items-center gap-2 shadow-xl cursor-pointer"
               data-testid="hero-cta-explore"
             >
               Explore Courses <ArrowRight size={20} />
             </button>
 
             <button
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition flex items-center gap-2"
+              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition flex items-center gap-2 cursor-pointer"
               data-testid="hero-cta-watch"
+              onClick={() =>
+                window.open(
+                  "https://www.youtube.com/watch?v=0dL3CloGmok",
+                  "_blank",
+                )
+              }
             >
               <Play size={20} /> Watch Demo
             </button>

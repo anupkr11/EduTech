@@ -9,6 +9,7 @@ export default function CoursesSection({ selectedCategory = "All" }) {
   const [category, setCategory] = useState("All");
   const [courses, setCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState([]);
 
   const coursesPerPage = 6;
 
@@ -27,6 +28,22 @@ export default function CoursesSection({ selectedCategory = "All" }) {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    const fetchEnrollments = async () => {
+      try {
+        const res = await API.get("/progress/my");
+
+        const ids = res.data.map((p) => p.courseId?._id);
+
+        setEnrolledCourseIds(ids);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchEnrollments();
+  }, []);
+
   // Filter logic
   const filteredCourses = courses.filter((course) => {
     return (
@@ -42,7 +59,7 @@ export default function CoursesSection({ selectedCategory = "All" }) {
 
   const currentCourses = filteredCourses.slice(
     indexOfFirstCourse,
-    indexOfLastCourse
+    indexOfLastCourse,
   );
 
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
@@ -50,20 +67,19 @@ export default function CoursesSection({ selectedCategory = "All" }) {
   return (
     <section className="py-20 px-4 sm:px-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
-        
         {/* Header */}
         <div className="mb-10">
           <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">
             All Courses
           </h2>
           <p className="text-gray-600">
-            Browse our complete catalog of courses and find your next learning journey
+            Browse our complete catalog of courses and find your next learning
+            journey
           </p>
         </div>
 
         {/* Search + Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-10">
-          
           {/* Search */}
           <input
             type="text"
@@ -134,7 +150,10 @@ export default function CoursesSection({ selectedCategory = "All" }) {
                   {/* Stats */}
                   <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                     <span className="flex items-center gap-1">
-                      <Star className="text-yellow-500 fill-yellow-500" size={14} />
+                      <Star
+                        className="text-yellow-500 fill-yellow-500"
+                        size={14}
+                      />
                       {course.rating || "4.5"}
                     </span>
 
@@ -165,7 +184,7 @@ export default function CoursesSection({ selectedCategory = "All" }) {
                         {Math.round(
                           ((course.originalPrice - course.price) /
                             course.originalPrice) *
-                            100
+                            100,
                         )}
                         % OFF
                       </span>
@@ -185,12 +204,21 @@ export default function CoursesSection({ selectedCategory = "All" }) {
                   </div>
 
                   {/* Button */}
-                  <button
-                    onClick={() => navigate(`/courses/${course._id}`)}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:scale-105 transition"
-                  >
-                    View Details
-                  </button>
+                  {enrolledCourseIds.includes(course._id) ? (
+                    <button
+                      onClick={() => navigate(`/learn/${course._id}`)}
+                      className="w-full bg-green-600 text-white py-2.5 rounded-lg font-medium hover:bg-green-700 transition"
+                    >
+                      Continue Learning
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => navigate(`/courses/${course._id}`)}
+                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:scale-105 transition"
+                    >
+                      View Details
+                    </button>
+                  )}
                 </div>
               </div>
             ))
@@ -204,12 +232,11 @@ export default function CoursesSection({ selectedCategory = "All" }) {
         {/* Pagination UI */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
-            
             {/* Prev */}
             <button
               onClick={() => setCurrentPage((prev) => prev - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50 cursor-pointer"
             >
               Prev
             </button>
@@ -219,7 +246,7 @@ export default function CoursesSection({ selectedCategory = "All" }) {
               <button
                 key={index}
                 onClick={() => setCurrentPage(index + 1)}
-                className={`px-4 py-2 rounded-lg ${
+                className={`px-4 py-2 rounded-lg cursor-pointer ${
                   currentPage === index + 1
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200"
@@ -233,11 +260,10 @@ export default function CoursesSection({ selectedCategory = "All" }) {
             <button
               onClick={() => setCurrentPage((prev) => prev + 1)}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50 cursor-pointer"
             >
               Next
             </button>
-
           </div>
         )}
       </div>

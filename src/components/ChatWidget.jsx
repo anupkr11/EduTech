@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
+import API from "../api/api";
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -15,22 +16,19 @@ export default function ChatWidget() {
   bottomRef.current?.scrollIntoView({ behavior: "smooth" });
 }, [messages]);
 
-  // 🔥 GROQ API CALL (you will add key later)
+  // GROQ API CALL 
   const fetchAIResponse = async (prompt) => {
   try {
     setLoading(true);
 
-    const res = await fetch("http://localhost:5000/api/ai/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: prompt }),
+    const res = await API.post("/ai/chat", {
+      message: prompt,
     });
 
-    const data = await res.json();
-    return data.reply;
+    return res.data.reply;
+
   } catch (err) {
+    console.error(err);
     return "⚠️ Something went wrong. Try again.";
   } finally {
     setLoading(false);
@@ -44,7 +42,7 @@ export default function ChatWidget() {
 
     setInput("");
 
-    // 🔥 AI reply
+    // AI reply
     const aiText = await fetchAIResponse(input);
 
     const botMsg = { role: "bot", text: aiText };
@@ -56,7 +54,7 @@ export default function ChatWidget() {
       {/* FLOATING BUTTON */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition z-50"
+        className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition z-50 cursor-pointer"
       >
         {open ? <X /> : <MessageCircle />}
       </button>
@@ -107,14 +105,14 @@ export default function ChatWidget() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask anything..."
+              placeholder="Ask me anything..."
               className="flex-1 border px-3 py-2 rounded-lg focus:outline-none"
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
 
             <button
               onClick={handleSend}
-              className="bg-blue-600 text-white p-2 rounded-lg"
+              className="bg-blue-600 text-white p-2 rounded-lg cursor-pointer hover:bg-blue-700 transition disabled:opacity-50"
             >
               <Send size={18} />
             </button>

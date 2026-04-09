@@ -5,92 +5,100 @@ import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 
 export default function LoginModal({ isOpen, onClose }) {
-  const [isSignup, setIsSignup] = useState(false); // 🔥 toggle
+  const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); 
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
-const validatePassword = (password) => {
-  return password.length >= 6;
-};
+  const validatePassword = (password) => {
+    return password.length >= 6;
+  };
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  // 🔥 FRONTEND VALIDATION
-  if (isSignup && !name.trim()) {
-    return setError("Name is required");
-  }
+    try {
+      // VALIDATION
+      if (isSignup && !name.trim()) {
+        setLoading(false);
+        return setError("Name is required");
+      }
 
-  if (!email || !validateEmail(email)) {
-    return setError("Enter a valid email");
-  }
+      if (!email || !validateEmail(email)) {
+        setLoading(false);
+        return setError("Enter a valid email");
+      }
 
-  if (!password || !validatePassword(password)) {
-    return setError("Password must be at least 6 characters");
-  }
+      if (!password || !validatePassword(password)) {
+        setLoading(false);
+        return setError("Password must be at least 6 characters");
+      }
 
-  try {
-    if (isSignup) {
-      await API.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
+      // SIGNUP
+      if (isSignup) {
+        await API.post("/auth/register", {
+          name,
+          email,
+          password,
+        });
 
-      alert("Signup successful 🎉");
-      setIsSignup(false);
-      return;
+        alert("Signup successful 🎉");
+        setIsSignup(false);
+        setLoading(false);
+        return;
+      }
+
+      // LOGIN
+      const result = await login(email, password);
+
+      if (!result.success) {
+        setLoading(false);
+        return setError(result.error);
+      }
+
+      const res = await API.get("/progress/my");
+
+      if (res.data.length > 0) {
+        navigate("/dashboard");
+      } else {
+        navigate("/courses");
+      }
+
+      onClose();
+    } catch (err) {
+      console.error(err);
+
+      if (err.response?.data?.msg) {
+        setError(err.response.data.msg);
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    const result = await login(email, password);
-
-    if (!result.success) {
-      setError(result.error);
-      return;
-    }
-
-    const res = await API.get("/progress/my");
-
-    if (res.data.length > 0) {
-      navigate("/dashboard");
-    } else {
-      navigate("/courses");
-    }
-
-    onClose();
-  } catch (err) {
-    console.error(err);
-
-    // 🔥 HANDLE BACKEND ERRORS
-    if (err.response?.data?.msg) {
-      setError(err.response.data.msg);
-    } else {
-      setError("Something went wrong");
-    }
-  }
-};
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
 
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black"
+          className="absolute top-4 right-4 text-gray-500 hover:text-black cursor-pointer"
         >
           <X size={22} />
         </button>
@@ -110,15 +118,15 @@ const validatePassword = (password) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* 🔥 Name (only signup) */}
           {isSignup && (
             <div className="flex items-center border rounded-lg px-3 py-2">
               <User className="text-gray-400 mr-2" size={18} />
               <input
                 type="text"
                 placeholder="Name"
-                className="w-full outline-none"
+                className="w-full outline-none cursor-pointer"
                 onChange={(e) => setName(e.target.value)}
+                disabled={loading}
               />
             </div>
           )}
@@ -131,6 +139,7 @@ const validatePassword = (password) => {
               placeholder="Email"
               className="w-full outline-none"
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
             />
           </div>
 
@@ -142,19 +151,32 @@ const validatePassword = (password) => {
               placeholder="Password"
               className="w-full outline-none"
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
           </div>
 
           {/* Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold transition"
+            disabled={loading}
+            className={`w-full py-2 rounded-lg font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${
+              loading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            } text-white`}
           >
-            {isSignup ? "Sign Up" : "Login"}
+            {loading ? (
+              <>
+                <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-4 h-4"></span>
+                {isSignup ? "Signing up..." : "Logging in..."}
+              </>
+            ) : (
+              isSignup ? "Sign Up" : "Login"
+            )}
           </button>
         </form>
 
-        {/* 🔥 Toggle */}
+        {/* Toggle */}
         <p className="text-center text-sm text-gray-600 mt-4">
           {isSignup ? "Already have an account?" : "New user?"}{" "}
           <span

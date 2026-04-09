@@ -23,9 +23,7 @@ export default function CourseDetails() {
         // Get user progress
         const progressRes = await API.get("/progress/my");
 
-        const enrolled = progressRes.data.some(
-          (p) => p.courseId?._id === id
-        );
+        const enrolled = progressRes.data.some((p) => p.courseId?._id === id);
 
         setIsEnrolled(enrolled);
       } catch (err) {
@@ -35,7 +33,6 @@ export default function CourseDetails() {
 
     fetchData();
   }, [id]);
-
 
   // LOADING STATE
   if (!course) {
@@ -51,7 +48,6 @@ export default function CourseDetails() {
       <Navbar />
 
       <div className="pt-20 max-w-6xl mx-auto px-6 py-10">
-        
         {/* COURSE BANNER */}
         <img
           src={course.thumbnail}
@@ -84,38 +80,34 @@ export default function CourseDetails() {
 
         {/* CTA BUTTON */}
         {!isEnrolled ? (
-  <button
-    onClick={() => {
-      if (!isAuthenticated) {
-        alert("Please login to enroll");
-        navigate("/");
-        return;
-      }
-      navigate(`/payment/${course._id}`);
-    }}
-    className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
-  >
-    Enroll Now
-  </button>
-) : (
-  <button
-    className="bg-gray-400 text-white px-8 py-3 rounded-lg cursor-not-allowed"
-  >
-    Already Enrolled
-  </button>
-)}
+          <button
+            onClick={() => {
+              if (!isAuthenticated) {
+                alert("Please login to enroll");
+                navigate("/");
+                return;
+              }
+              navigate(`/payment/${course._id}`);
+            }}
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 cursor-pointer"
+          >
+            Enroll Now
+          </button>
+        ) : (
+          <button className="bg-gray-400 text-white px-8 py-3 rounded-lg cursor-not-allowed">
+            Already Enrolled
+          </button>
+        )}
 
         <button
           onClick={() => navigate(-1)}
-          className="ml-4 text-gray-600 underline"
+          className="ml-4 text-gray-600 underline cursor-pointer"
         >
           ← Back
         </button>
 
         {/* COURSE CONTENT */}
-        <h2 className="text-2xl font-bold mt-10 mb-4">
-          Course Content
-        </h2>
+        <h2 className="text-2xl font-bold mt-10 mb-4">Course Content</h2>
 
         <div className="space-y-3">
           {course.lessons?.map((lesson, index) => (
@@ -133,7 +125,7 @@ export default function CourseDetails() {
                   onClick={() =>
                     navigate(`/learn/${course._id}?lesson=${index}`)
                   }
-                  className="text-green-600 font-semibold"
+                  className="text-green-600 font-semibold cursor-pointer"
                 >
                   ▶ {index === 0 ? "Preview" : "Play"}
                 </button>

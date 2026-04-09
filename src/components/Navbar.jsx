@@ -60,7 +60,7 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                  className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition cursor-pointer"
                 >
                   <LogOut size={18} />
                   Logout
@@ -71,7 +71,7 @@ export default function Navbar() {
                 {/* Login Button */}
                 <button
                   onClick={() => setIsLoginOpen(true)}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:scale-105 transition"
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:scale-105 transition cursor-pointer"
                 >
                   Login
                 </button>
@@ -105,7 +105,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full bg-red-500 text-white py-2 rounded-lg"
+                  className="w-full bg-red-500 text-white py-2 rounded-lg cursor-pointer"
                 >
                   Logout
                 </button>
@@ -113,7 +113,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => setIsLoginOpen(true)}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg"
+                className="w-full bg-blue-600 text-white py-2 rounded-lg cursor-pointer"
               >
                 Login
               </button>

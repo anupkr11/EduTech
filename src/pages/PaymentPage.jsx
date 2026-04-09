@@ -17,13 +17,13 @@ export default function PaymentPage() {
     try {
       const stripe = await stripePromise;
 
-      // 🔥 call backend to create session
+      // call backend to create session
       const res = await API.post("/payment/create-checkout-session", {
         courseId: id,
         title: "Course Payment",
       });
 
-      // 🔥 redirect to Stripe Checkout
+      // redirect to Stripe Checkout
       window.location.href = res.data.url;
 
       if (result.error) {
